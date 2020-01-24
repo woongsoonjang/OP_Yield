@@ -4,7 +4,7 @@ This application is a translation of the OP-Yield Microsoft Excel™ spreadsheet
 
 ## Description
 
-Using 14 user-specified values (from the ''Input Values'' tab), the application produced yield summary, growing stock, and precommercial thinning summary tables. In addition, annual volume increment, stand density, density by crown class plots can be generated. Users can be download tables and figures into their devices with various file formats (e.g., csv, xlsx for tables and pdf, png, and tiff for figures).  
+Using 14 user-specified values (from the ''Input Values'' tab), the application produced yield summary, growing stock, and precommercial thinning summary tables. In addition, annual volume increment, stand density, density distribution by crown class plots can be generated. Users can download tables and figures into their devices with various file formats (e.g., csv, xlsx for tables and pdf, png, and tiff for figures).  
 
 ## Built with
 * R/Rstudio/`Shiny`
