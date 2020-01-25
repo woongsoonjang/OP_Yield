@@ -1,82 +1,85 @@
 
-# Stand Density Management Diagram Report
+# OP-Yield: Adaptation of Oliver and Powers (1978) Yield Table
 
 * Date/time: `r Sys.time()`
 
-#### *Caution!* Please note that this report was made through the proto-version of SDMD App., so the numbers and figure might contain errors.
+## Yield Summary
 
-## Stand Description
 
 ```{r, echo=FALSE}
 
-TABLE_OUT <- t1()
-SP_REF<-switch(as.numeric(input$ineq), "User Defined", 
-                              "Ponderosa pine:	Long and Shaw (2005)",
-                              "Ponderosa pine:	Ritchie and Zhang (In Press)",
-                              "Ponderosa pine:	Edminster (1988)",
-                              "Ponderosa pine:	Cochran and Barrett (1992)",
-                              "California mixed-conifer:	Long and Shaw (2012)",
-                              "Douglas-fir:	Long et al. (1988)",
-                              "White fir:	Zhang et al. (2007)",
-                              "Lodgepole pine:	McCarter and Long (1986)")
-UNIT <- ifelse(as.logical(input$use.metric),"Metric","English")
-REINEKE <- switch(as.numeric(input$ineq),input$reineke.term, 1.6000, 1.7721, 1.66113, 1.7721, 1.600, 1.605, 1.500, 1.600)
-
-if(as.logical(input$use.metric)){ # metric Units
-MAX_SDI <- switch(as.numeric(input$ineq),
-                  ifelse(input$max.sdi1<=2470 & input$max.sdi1>=741, input$max.sdi1 , 988),
-                  1112,
-                  988,
-                  1013,
-                  902,
-                  ifelse(!(input$max.sdi6<=1482 & input$max.sdi6>=1112), 1359, input$max.sdi6),
-                  1482,
-                  1976,
-                  1729)
-} else{ #  English units
-MAX_SDI <- switch(as.numeric(input$ineq),
-                  ifelse(input$max.sdi1<=1000 & input$max.sdi1>=300, input$max.sdi1 , 400),
-                  450,
-                  400,
-                  410,
-                  365,
-                  ifelse(!(input$max.sdi6<=600 & input$max.sdi6>=450), 550, input$max.sdi6),
-                  600,
-                  800,
-                  700)
-}
-MGT_ZONE <-paste(if (as.numeric(input$ineq==1)) input$mgt.zone1 else if (input$ineq==6) input$mgt.zone6 else c(0.35,0.60), collapse=" ")  
+TABLE_OUT <- yield.summary.table(OP.tab.cal())
+yth1 <- switch(ineq.cf(),
+               "Oliver & Powers 0_1"= "Oliver and Powers (1978) Total Stem CF Volume, 1-foot stump",
+               "Wensel & Olson 0_1" = "Wensel and Olson (1995) Total Stem CF Volume, 1-foot stump",
+               "MacLean&Berger 4_1" = "MacLean and Berger (1976) CF Volume, 4-inch top, 1-foot stump")
+yth2 <- switch(ineq.bf(),
+                 "Wensel & Olson 8_1" = "Wensel and Olson (1995): Scribner BF Volume 8-inch top, 1-foot stump",
+                 "Wensel & Olson 6_1" = "Wensel and Olson (1995): Scribner BF Volume 6-inch top, 1-foot stump",
+                 "Wensel & Olson 4_1" = "Wensel and Olson (1995): Scribner BF Volume 4-inch top, 1-foot stump",
+                 "MacLean&Berger v_1" = "MacLean and Berger (1976) Scribner BF Volume, 4-inch top, 1-foot stump")
 
 ```
 
-* Species and Reference: `r SP_REF`
-* Measured unit: `r UNIT`
-* Maximum SDI: `r MAX_SDI`
-* Reineke's term (slope): `r REINEKE`
-* Management Zone: [`r MGT_ZONE`]
+* CF Volume equation: `r yth1`
+* BF Volume equation: `r yth2`
 
-
-## Estimated Stand Attributes
 
 ```{r, echo=FALSE,warning=FALSE}
 suppressWarnings(suppressMessages(library("pander")))   # suppress warnings
-#library(knitr)
-#library(kableExtra)
-#kable(TABLE_OUT,warning=FALSE)
+
 panderOptions('table.continues', '')
 pander(TABLE_OUT, split.table = 100, round=1, style = 'rmarkdown')
-#kable(TABLE_OUT, "latex", booktabs = T) %>%
-#kable_styling(latex_options = c("striped", "scale_down"))
+
 ```
 
+## Annual Volume Increment
 
-```{r plot, fig.height=9, echo=FALSE}
+```{r plot1, fig.height=4, echo=FALSE}
 p1()
 ```
 
 
+## Growing Stock Table
+
+* Age: `r GS.Table.Age()`, Year: `r GS.Table.Age()+Plant.yr()`
 
 
+```{r, echo=FALSE,warning=FALSE}
+
+GT_TABLE_OUT <- Growing.stock.table(OP.tab.cal(), cf.merch.lim = cf.merch.lim(), Age=GS.Table.Age())
+suppressWarnings(suppressMessages(library("pander")))   # suppress warnings
+
+panderOptions('table.continues', '')
+pander(GT_TABLE_OUT, split.table =100, round=1, style = 'rmarkdown')
+
+```
+
+## Stand Density
+
+```{r plot2, fig.height=4, echo=FALSE}
+p3()
+```
 
 
+## Density by Crown Class
+
+```{r plot3, fig.height=4, echo=FALSE}
+p2()
+```
+
+## Precommercial Thinning Summary
+
+* Year: `r ifelse(pct.age()>0, pct.age()+Plant.yr(), "No PCT")`
+
+
+```{r, echo=FALSE,warning=FALSE}
+
+PCT_TABLE_OUT <- PCT.summary.table(OP.tab.cal())
+suppressWarnings(suppressMessages(library("pander")))   # suppress warnings
+
+panderOptions('table.continues', '')
+pander(PCT_TABLE_OUT, split.table = 100, round=1, style = 'rmarkdown')
+
+```
 

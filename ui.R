@@ -70,7 +70,11 @@ navbarPage(title = "OP-Yield",
                     radioButtons("Tblform2", "File format", c("CSV", "XLSX"),
                              inline = TRUE),
                     downloadButton("table_out2", "Save Table"),
-                    hr()
+                    hr(),
+                    h5("Download Report"),
+                    radioButtons("Repform", "Document format", c("PDF", "HTML", "Word"),
+                                 inline = TRUE),
+                    downloadButton("downloadReport","Create Report")
                 )
             ),
             
