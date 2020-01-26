@@ -441,7 +441,7 @@ Den.by.class.view <- function(OP.calcs.table){
 Density.view <- function(OP.calcs.table, max.sdi, sdi.lines=250){
     par(mar=c(3.5,3.5,1.2,1), mgp=c(1.9, 0.6, 0))
     
-    plot(OP.calcs.table$Age, OP.calcs.table$SDI, type="l", main="Density by Crown Class",
+    plot(OP.calcs.table$Age, OP.calcs.table$SDI, type="l", main="Stand Density",
     		 xlab="Age", ylim= c(0,max(c(OP.calcs.table$Prim.tpa2, max.sdi))+100),
              ylab=expression(paste("Trees ",~ac^{-1},sep="")), cex.axis=1.3,cex.lab=1.3, lwd=2, lty=2)
     lines(OP.calcs.table$Age, OP.calcs.table$Prim.tpa2, type="l", lwd=2)

@@ -82,7 +82,8 @@ navbarPage(title = "OP-Yield",
             column(6, 
                 mainPanel(
                     conditionalPanel(condition = "input.submit == 0",
-                                     helpText("For display and export, please enter input values in the 'Input Values' tab and click the Submit button")
+                        h3("IMPORTANT: for display and export, please enter input values in the", 
+                          span("Input Values", style = "color:red"), "tab and confirm them through clicking the", span("Submit", style = "color:red"), "button.")
                     ),
                     conditionalPanel(condition = "input.submit != 0",
                         h4("Yield Summary"),
@@ -114,15 +115,15 @@ navbarPage(title = "OP-Yield",
                                     inline = TRUE),
                        downloadButton("image_out1", "Save Figure"),
                        hr(),
-                       h5("Export Stand Density plot"),
-                       radioButtons("IMGformat2", "Image format", c("PDF", "PNG","TIFF"),
-                                    inline = TRUE),
-                       downloadButton("image_out2", "Save Figure"),
-                       hr(),
                        h5("Export Density by Crown Class plot"),
                        radioButtons("IMGformat3", "Image format", c("PDF", "PNG","TIFF"),
                                     inline = TRUE),
                        downloadButton("image_out3", "Save Figure"),
+                       hr(),
+                       h5("Export Stand Density plot"),
+                       radioButtons("IMGformat2", "Image format", c("PDF", "PNG","TIFF"),
+                                    inline = TRUE),
+                       downloadButton("image_out2", "Save Figure"),
                        hr()
                    )
             ),
@@ -131,7 +132,8 @@ navbarPage(title = "OP-Yield",
             column(6,
                 mainPanel(
                     conditionalPanel(condition = "input.submit == 0",
-                        helpText("For display and export, please enter input values in the 'Input Values' tab and click the Submit button")
+                        h3("IMPORTANT: for display and export, please enter input values in the", 
+                            span("Input Values", style = "color:red"), "tab and confirm them through clicking the", span("Submit", style = "color:red"), "button.")
                         ),
                     conditionalPanel(condition = "input.submit != 0",
                         h4("Annual Net Cubit Foot Volume Increment"),
