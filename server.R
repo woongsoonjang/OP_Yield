@@ -48,12 +48,12 @@ output$yield.summary <- renderDT({
   yth1 <- switch(ineq.cf(),
                "Oliver & Powers 0_1"= "Oliver and Powers (1978) Total Stem CF Volume, 1-foot stump",
                "Wensel & Olson 0_1" = "Wensel and Olson (1995) Total Stem CF Volume, 1-foot stump",
-               "MacLean&Berger 4_1" = "MacLean and Berger (1976) CF Volume, 4-inch top, 1-foot stump")
+               "MacLean & Berger 4_1" = "MacLean and Berger (1976) CF Volume, 4-inch top, 1-foot stump")
   yth2 <- switch(ineq.bf(),
                  "Wensel & Olson 8_1" = "Wensel and Olson (1995): Scribner BF Volume 8-inch top, 1-foot stump",
                  "Wensel & Olson 6_1" = "Wensel and Olson (1995): Scribner BF Volume 6-inch top, 1-foot stump",
                  "Wensel & Olson 4_1" = "Wensel and Olson (1995): Scribner BF Volume 4-inch top, 1-foot stump",
-                 "MacLean&Berger v_1" = "MacLean and Berger (1976) Scribner BF Volume, 4-inch top, 1-foot stump")
+                 "MacLean & Berger v_1" = "MacLean and Berger (1976) Scribner BF Volume, 4-inch top, 1-foot stump")
   
   yield.header = htmltools::withTags(table(
     class = 'display',

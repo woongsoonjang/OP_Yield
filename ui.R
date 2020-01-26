@@ -2,42 +2,55 @@
 
 library(shiny)
 library(DT)
+library(bsplus)
 
 navbarPage(title = "OP-Yield",
     tabPanel("Input Values", 
         fluidRow(
             column(3, 
                 wellPanel(
-                    numericInput("plant.yr", "Planting Year", as.integer(format(Sys.Date(), "%Y"))),
+                    numericInput("plant.yr", "Planting Year", as.integer(format(Sys.Date(), "%Y")))%>%
+                        bs_embed_tooltip(title = "Planting year is a bookeeping value only. It has no impact on tabular values"),
                     sliderInput("plant.den", "Planting Density (tpa):",
                             min = 130, max = 1210, value = 303),
                     sliderInput("si", "Site Index (ft):",
-                            min = 75, max = 125, value = 105),
+                            min = 75, max = 125, value = 105)%>%
+                        bs_embed_tooltip(title = "At total (base) age 50"),
                     sliderInput("ini.plant.surv", "Initial Planting Survival %:",
-                            min = 40, max = 100, value = 85),
+                            min = 40, max = 100, value = 85)%>%
+                        bs_embed_tooltip(title = "Proportion of planted trees surviving the first year"),
                     sliderInput("max.sdi", "Maximum SDI:",
                             min = 365, max = 500, value = 400),
                     selectInput("reineke.term", "SDI Slope:",
-                            choices = c(-1.605, -1.7712, -1.661, -1.7653),  selected = -1.605),
-                    selectInput("pct.age", "PCT Age:", choices = c(0, 5:15), selected = 0)
+                            choices = c(-1.605, -1.7712, -1.661, -1.7653),  selected = -1.605)%>%
+                        bs_embed_tooltip(title = "Slope for SDI function: \n -1.771 Oliver and Powers (1978) \n -1.605 Reineke (1933) \n -1.66 Edminister (1988) \n -1.7653 (Demars and barrett (1985)"),
+                    selectInput("pct.age", "PCT Age:", choices = c(0, 5:15), selected = 0)%>%
+                        bs_embed_tooltip(title = "PCT age of zero indicates no PCT to be perfromed")
                     )
                 ),
             column(3,
                 wellPanel(
-                    sliderInput("pct.tgt", "PCT Target (tpa):", min = 80, max = 300, value = 180),
-                    sliderInput("bg.mort", "Annual Background Mortality %:", min = 0, max = 1, value = 0),
+                    sliderInput("pct.tgt", "PCT Target (tpa):", min = 80, max = 300, value = 180)%>%
+                        bs_embed_tooltip(title = "Trees per acre retained in a precommercial thin"),
+                    sliderInput("bg.mort", "Annual Background Mortality %:", min = 0, max = 1, value = 0)%>%
+                        bs_embed_tooltip(title = "Percent of stems annual mortality"),
                     sliderInput("cf.merch.lim", "Merchantability Limit (inch):", 
-                            min = 4, max = 14, step=0.1, value = 11.5),
+                            min = 4, max = 14, step=0.1, value = 11.5)%>%
+                        bs_embed_tooltip(title = "Lower diameter limit for merchantability calculations"),
                     selectInput("ineq.cf", "Cubic Foot Volume Eq.:",
-                            choices = c("Oliver & Powers 0_1","Wensel & Olson 0_1", "MacLean&Berger 4_1"), 
-                            selected = "Oliver & Powers 0_1"),
+                            choices = c("Oliver & Powers 0_1","Wensel & Olson 0_1", "MacLean & Berger 4_1"), 
+                            selected = "Oliver & Powers 0_1")%>%
+                        bs_embed_tooltip(title = "Select CF Volume equations. \n Two numbers stand for top and stump diameters"),
                     selectInput("ineq.bf", "Board Foot Volume Eq.:",
                             choices = c("Wensel & Olson 8_1","Wensel & Olson 6_1", "Wensel & Olson 4_1",
-                                        "MacLean&Berger v_1"), selected = "Wensel & Olson 4_1"),
+                                        "MacLean & Berger v_1"), selected = "Wensel & Olson 4_1")%>%
+                        bs_embed_tooltip(title = "Select BF Volume equations. \n Two numbers stand for top and stump diameters"),
                     sliderInput("reten.tgt", "Target Rotation Retention (tpa):",
-                            min = 50, max = 180, value = 80),
+                            min = 50, max = 180, value = 80)%>%
+                        bs_embed_tooltip(title = "How many trees do you want to retain when you conduct a commertial thin?"),
                     sliderInput("GS.Table.Age", "Growing Stock Table Age:",
-                            min = 5, max = 60, value = 40),
+                            min = 5, max = 60, value = 40)%>%
+                        bs_embed_tooltip(title = "Set the age to view in the Growing-Stock Table"),
                     helpText("For yield estimate, click the submit button"),
                     actionButton("submit", "Submit")
                 )

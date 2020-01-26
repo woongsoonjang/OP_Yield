@@ -51,7 +51,7 @@ cf.vol.cal<-function(ineq.cf, ht, dbh, tpa){
     cf.vol.parms <- switch(ineq.cf,
 		"Oliver & Powers 0_1"= list(c0 = 0, c1 = 1, c2 = 1, c3 = 1, c4 = 0.024843, c5 = 0.001765, c6 = 0, c7 = 0),
 		"Wensel & Olson 0_1" = list(c0 = 0.002525, c1 = 1.8515, c2 = 1.0004, c3 = 1.00647, c4 = 0, c5 = 0, c6 = 0, c7 = 0),
-		"MacLean&Berger 4_1" = list(c0 = 0, c1 = 1, c2 = 1, c3 = 1, c4 = 0, c5 = 0, c6 = 0.40206, c7 = -0.89991) )          
+		"MacLean & Berger 4_1" = list(c0 = 0, c1 = 1, c2 = 1, c3 = 1, c4 = 0, c5 = 0, c6 = 0.40206, c7 = -0.89991) )          
     with (cf.vol.parms, ifelse(dbh>0.1,tpa*((c0*(dbh^c1)*(ht^c2)*(c3^dbh))+(c4+c5*dbh*dbh*ht)+(0.005454154*dbh*dbh*ht)*(c6+c7/ht)),0) )
 }
 
@@ -61,7 +61,7 @@ bf.vol.cal<-function(ineq.bf, ht, dbh, tpa, cf.merch.lim){
 		"Wensel & Olson 8_1" = list(b0 = 0.0001453, b1 = 2.471, b2 = 1.1371, b3 = 0.99058, b4 = 0, b5 = 0, b6 = 0, b7 = 0 , b8= 0),
 		"Wensel & Olson 6_1" = list(b0 = 0.0001805, b1 = 2.3988, b2 = 1.137, b3 = 0.99187, b4 = 0, b5 = 0, b6 = 0, b7 = 0 , b8= 0),
 		"Wensel & Olson 4_1" = list(b0 = 0.0002054, b1 = 2.3562, b2 = 1.1372, b3 = 0.9926, b4 = 0, b5 = 0, b6 = 0, b7 = 0 , b8= 0), 
-        "MacLean&Berger v_1" = list(b0 = 0, b1 = 1, b2 = 1, b3 = 1, b4 = 0, b5 = 0, b6 = 3.2294, b7 = -585.5 , b8= -21.7575) )          
+        "MacLean & Berger v_1" = list(b0 = 0, b1 = 1, b2 = 1, b3 = 1, b4 = 0, b5 = 0, b6 = 3.2294, b7 = -585.5 , b8= -21.7575) )          
     with (bf.vol.parms, ifelse(dbh > cf.merch.lim,
                         tpa*((10*b0*(dbh^b1)*(ht^b2)*(b3^dbh))+(b4+b5*dbh*dbh*ht) +
                         ifelse(dbh > 12, (dbh*dbh*ht*0.005454154)*(b6+b7/(dbh*ht)+b8/dbh),0)), 0) )
