@@ -23,7 +23,7 @@ navbarPage(title = "OP-Yield",
                             min = 365, max = 500, value = 400),
                     selectInput("reineke.term", "SDI Slope:",
                             choices = c(-1.605, -1.7712, -1.661, -1.7653),  selected = -1.605)%>%
-                        bs_embed_tooltip(title = "Slope for SDI function: \n -1.771 Oliver and Powers (1978) \n -1.605 Reineke (1933) \n -1.66 Edminister (1988) \n -1.7653 (Demars and barrett (1985)"),
+                        bs_embed_tooltip(title = "Slope for SDI function: \n -1.771: Oliver and Powers (1978) \n -1.605: Reineke (1933) \n -1.66: Edminister (1988) \n -1.7653: DeMars and Barrett (1985)"),
                     selectInput("pct.age", "PCT Age:", choices = c(0, 5:15), selected = 0)%>%
                         bs_embed_tooltip(title = "PCT age of zero indicates no PCT to be perfromed")
                     )
@@ -40,11 +40,11 @@ navbarPage(title = "OP-Yield",
                     selectInput("ineq.cf", "Cubic Foot Volume Eq.:",
                             choices = c("Oliver & Powers 0_1","Wensel & Olson 0_1", "MacLean & Berger 4_1"), 
                             selected = "Oliver & Powers 0_1")%>%
-                        bs_embed_tooltip(title = "Select CF Volume equations. \n Two numbers stand for top and stump diameters"),
+                        bs_embed_tooltip(title = "Select CF Volume equations. \n Following two numbers represent top and stump sizes for volume calculation."),
                     selectInput("ineq.bf", "Board Foot Volume Eq.:",
                             choices = c("Wensel & Olson 8_1","Wensel & Olson 6_1", "Wensel & Olson 4_1",
                                         "MacLean & Berger v_1"), selected = "Wensel & Olson 4_1")%>%
-                        bs_embed_tooltip(title = "Select BF Volume equations. \n Two numbers stand for top and stump diameters"),
+                        bs_embed_tooltip(title = "Select BF Volume equations. \n Following two numbers represent top and stump sizes for volume calculation."),
                     sliderInput("reten.tgt", "Target Rotation Retention (tpa):",
                             min = 50, max = 180, value = 80)%>%
                         bs_embed_tooltip(title = "How many trees do you want to retain when you conduct a commertial thin?"),

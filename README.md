@@ -17,10 +17,25 @@ Using 14 user-specified values (from the ''Input Values'' tab), the application 
 * Jianwei Zhang, US Forest Service
 
 ## References
+* Edminster, C.B. 1988. Stand density and stocking in even-aged ponderosa pine
+stands. In: Bumgartner, D.M.; Lotan J.E., eds. Ponderosa pine: the species and
+its management: symposium proceedings. Vancouver, WA: Washington State
+University, Cooperative Extension: 253-260.
+* DeMars, D.J.; Barrett, J.W. 1987. Ponderosa pine managed-yield simulator: PPSIM
+user's guide. Gen. Tech. Rep. PNW-GTR-203. Portland, OR: U.S. Department of
+Agriculture, Forest Service, Pacific Northwest Research Station. 36 p
+* MacLean, C.D.; Burger, J.M. 1976. Softwood tree volume equations for major
+California species. Res. Note PNW-RN-266. Portland, OR: U.S. Department of
+Agriculture, Forest Service, Pacific Northwest Forest and Range Experiment
+Station. 12 p.
 * Oliver, W.W.; Powers, R.F. 1978. Growth models for ponderosa pine: I. yield of
 unthinned plantations in northern California. Res. Pap. PSW-RN-133. Berkeley,
 CA: U.S. Department of Agriculture, Forest Service, Pacific Southwest Forest
 and Range Experiment Station. 21 p.
-* Ritchie, Martin W.; Zhang, Jianwei. 2018. OP-Yield Version 1.00 user’s guide.
+* Reineke, L.H. 1933. Perfecting a stand-density index for even-aged forests. Journal
+of Agricultural Research. 46(7): 627-638.
+* __Ritchie, Martin W.; Zhang, Jianwei. 2018. OP-Yield Version 1.00 user’s guide.
 Gen. Tech. Rep. PSW-GTR-259. Albany, CA: U.S. Department of Agriculture,
-Forest Service, Pacific Southwest Research Station. 26 p.
+Forest Service, Pacific Southwest Research Station. 26 p.__
+* Wensel, L.C.; Olson, C.M. 1995. Tree volume equations for major California
+conifers. Hilgardia. 62(5): 1-11.
