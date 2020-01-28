@@ -1,10 +1,22 @@
+---
+title: "OP-Yield: Adaptation of Oliver and Powers (1978) Yield Table"
+classoption: landscape
+---
 
-# OP-Yield: Adaptation of Oliver and Powers (1978) Yield Table
+## Setting/input values
 
-* Date/time: `r Sys.time()`
+| Input   |      Values      | Input   |      Value      |
+|----------|:-------------:|----------|:-------------:|
+| Planting year |  `r Plant.yr()` | Date/time | `r Sys.time()` |
+| Planting density (trees per acre) |   `r plant.den()`   | Planting spacing |   `r round(sqrt(43560/plant.den()), 1)`  |
+| Site index (ft) |`r si()` | Initial Planting Survival (%) | `r ini.plant.surv()` |
+| Maximum SDI |   `r max.sdi()`   | SDI slope |    `r reineke.term()`   |
+| Precommercial thinn age | `r pct.age()` | Precommercial thinn target (trees per acre) | `r pct.tgt()` |
+| Annual background mortality (%) |    `r bg.mort()`   |  Merchantability limit (inch) |    `r cf.merch.lim()`   |
+| Target rotation retention (trees per acre) | `r reten.tgt()` | Growing stock table age | `r GS.Table.Age()` |
+
 
 ## Yield Summary
-
 
 ```{r, echo=FALSE}
 
@@ -29,15 +41,10 @@ yth2 <- switch(ineq.bf(),
 suppressWarnings(suppressMessages(library("pander")))   # suppress warnings
 
 panderOptions('table.continues', '')
-pander(TABLE_OUT, split.table = 100, round=1, style = 'rmarkdown')
+pander(TABLE_OUT, round=1, style = 'rmarkdown', split.table = Inf)
 
 ```
 
-## Annual Volume Increment
-
-```{r plot1, fig.height=4, echo=FALSE}
-p1()
-```
 
 
 ## Growing Stock Table
@@ -51,9 +58,38 @@ GT_TABLE_OUT <- Growing.stock.table(OP.tab.cal(), cf.merch.lim = cf.merch.lim(),
 suppressWarnings(suppressMessages(library("pander")))   # suppress warnings
 
 panderOptions('table.continues', '')
-pander(GT_TABLE_OUT, split.table =100, round=1, style = 'rmarkdown')
+pander(GT_TABLE_OUT, split.table = Inf, round=1, style = 'rmarkdown')
 
 ```
+
+
+
+## Annual Volume Increment
+
+```{r plot1, fig.height=4, echo=FALSE}
+p1()
+```
+
+
+## Stand Density Management Diagram
+
+```{r SDMD, fig.height=10, echo=FALSE}
+p4()
+```
+
+
+
+
+## DMD Stand Summary
+
+```{r, echo=FALSE,warning=FALSE}
+suppressWarnings(suppressMessages(library("pander")))   # suppress warnings
+SDMDTABLE_OUT <- SDMD.t1()
+panderOptions('table.continues', '')
+pander(SDMDTABLE_OUT, split.table = Inf,  round=1, style = 'rmarkdown')
+
+```
+
 
 ## Stand Density
 
@@ -79,7 +115,7 @@ PCT_TABLE_OUT <- PCT.summary.table(OP.tab.cal())
 suppressWarnings(suppressMessages(library("pander")))   # suppress warnings
 
 panderOptions('table.continues', '')
-pander(PCT_TABLE_OUT, split.table = 100, round=1, style = 'rmarkdown')
+pander(PCT_TABLE_OUT, split.table = Inf, round=1, style = 'rmarkdown')
 
 ```
 

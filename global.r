@@ -49,9 +49,9 @@ mort.prop.func <- function(dbh){0.01*(0.276+0.003*(dbh-22)^2)}
 # function for cubit foot volume calculation
 cf.vol.cal<-function(ineq.cf, ht, dbh, tpa){
     cf.vol.parms <- switch(ineq.cf,
-		"Oliver & Powers 0_1"= list(c0 = 0, c1 = 1, c2 = 1, c3 = 1, c4 = 0.024843, c5 = 0.001765, c6 = 0, c7 = 0),
-		"Wensel & Olson 0_1" = list(c0 = 0.002525, c1 = 1.8515, c2 = 1.0004, c3 = 1.00647, c4 = 0, c5 = 0, c6 = 0, c7 = 0),
-		"MacLean & Berger 4_1" = list(c0 = 0, c1 = 1, c2 = 1, c3 = 1, c4 = 0, c5 = 0, c6 = 0.40206, c7 = -0.89991) )          
+		"Oliver & Powers 0_1"= list(c0 = 0, c1 = 1, c2 = 1, c3 = 1, c4 = 0.024843, c5 = 0.0017645, c6 = 0, c7 = 0),
+		"Wensel & Olson 0_1" = list(c0 = 0.002525, c1 = 1.8518, c2 = 1.0004, c3 = 1.00647, c4 = 0, c5 = 0, c6 = 0, c7 = 0),
+		"MacLean & Berger 4_1" = list(c0 = 0, c1 = 1, c2 = 1, c3 = 1, c4 = 0, c5 = 0, c6 = 0.40206, c7 = -0.899914) )          
     with (cf.vol.parms, ifelse(dbh>0.1,tpa*((c0*(dbh^c1)*(ht^c2)*(c3^dbh))+(c4+c5*dbh*dbh*ht)+(0.005454154*dbh*dbh*ht)*(c6+c7/ht)),0) )
 }
 
@@ -211,7 +211,7 @@ OP.calcs.table$BFV.supp <- bf.vol.cal(ineq.bf=ineq.bf, ht=OP.calcs.table$Ht.supp
 OP.calcs.table$CFVnet <- with (OP.calcs.table, CFV.dom + CFV.codom + CFV.int + CFV.supp)
 OP.calcs.table$Cvmerch <- with (OP.calcs.table, ifelse(Dbh.dom > cf.merch.lim, CFV.dom, 0) + 
                                                 ifelse(Dbh.codom > cf.merch.lim, CFV.codom, 0) + 
-                                                ifelse(Dbh.int > cf.merch.lim,CFV.codom ,0) +
+                                                ifelse(Dbh.int > cf.merch.lim,CFV.int ,0) +
                                                 ifelse(Dbh.supp > cf.merch.lim, CFV.supp ,0) )
 
 OP.calcs.table$BFScrib <- with (OP.calcs.table, BFV.dom + BFV.codom + BFV.int + BFV.supp) 

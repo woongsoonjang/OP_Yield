@@ -5,7 +5,7 @@ library(DT)
 library(bsplus)
 
 navbarPage(title = "OP-Yield",
-    tabPanel("Input Values", 
+    tabPanel("Summary", 
         fluidRow(
             column(3, 
                 wellPanel(
@@ -55,113 +55,167 @@ navbarPage(title = "OP-Yield",
                     actionButton("submit", "Submit")
                 )
             ),
-        # Main panel for displaying outputs ----
+            
+            
             column(6, 
-                mainPanel(
-                    h4("Density Guide"),
-                    DTOutput("Den.guide")
-                    )
-                )
+                   mainPanel(
+                       conditionalPanel(condition = "input.submit == 0",
+                                        h3("IMPORTANT: for display and export, please enter input values and click the", span("Submit", style = "color:red"), "button.")
+                       ),
+                       conditionalPanel(condition = "input.submit != 0",
+                                        h4("Yield Summary"),
+                                        DTOutput("yield.summary")
+                                        
+                                        
+                       )
+                   )
             )
         ),
-    
-    tabPanel("Summaries",
+        
         fluidRow(
-            
-            
-            
-            column(3, 
-                wellPanel(      
-                    h4("Export Tables"),
-                    hr(),
-                    h5("Export Yield Summary"),
-                    radioButtons("Tblform1", "File format", c("CSV", "XLSX"),
-                             inline = TRUE),
-                    downloadButton("table_out1", "Save Table"),
-                    hr(),
-                    h5("Export Growing Stock Table"),
-                    radioButtons("Tblform2", "File format", c("CSV", "XLSX"),
-                             inline = TRUE),
-                    downloadButton("table_out2", "Save Table"),
-                    hr(),
-                    h5("Download Report"),
-                    radioButtons("Repform", "Document format", c("PDF", "HTML", "Word"),
-                                 inline = TRUE),
-                    downloadButton("downloadReport","Create Report")
-                )
-            ),
-            
-            
             column(6, 
-                mainPanel(
-                    conditionalPanel(condition = "input.submit == 0",
-                        h3("IMPORTANT: for display and export, please enter input values in the", 
-                          span("Input Values", style = "color:red"), "tab and confirm them through clicking the", span("Submit", style = "color:red"), "button.")
-                    ),
-                    conditionalPanel(condition = "input.submit != 0",
-                        h4("Yield Summary"),
-                        DTOutput("yield.summary"),
-                        hr(),
-                        h4("Growing Stock Table"),
-                        DTOutput("grow.stock"),
-                        hr(),
-                        h4("Precommercial Thinning Summary"),
-                        DTOutput("PCT.summary"),
-                        hr(),
-                        h4("TPA for PCT as a function of QMD and UMZ SDI"),
-                        DTOutput("TPA.for.PCT")
-                    )
-                )
+                   h4("Density Guide"),
+                   DTOutput("Den.guide")
+            ),
+            column(6, conditionalPanel(condition = "input.submit != 0",
+                    hr(),
+                    h4("Growing Stock Table"),
+                    DTOutput("grow.stock"),
+                    hr(),
+                    h4("Precommercial Thinning Summary"),
+                    DTOutput("PCT.summary"),
+                    hr(),
+                    h4("TPA for PCT as a function of QMD and UMZ SDI"),
+                    DTOutput("TPA.for.PCT")                 
+                   )
             )
         )
     ),
-            
+        
+    tabPanel("SDMD",
+        fluidRow(
+            column(6,
+                    mainPanel(
+                        conditionalPanel(condition = "input.submit == 0",
+                             h3("IMPORTANT: for display and export, please go back to the ", 
+                                span("Summary", style = "color:red"), " tab, enter input values, and click the", span("Submit", style = "color:red"), "button.")
+                                ),
+                        conditionalPanel(condition = "input.submit != 0",
+                             h4("Stand Density Management Diamgram"),
+                             plotOutput("SDMD.View", height="1200px", width = "800px")
+                        )
+                    )
+             ),
+            column(6,
+                   mainPanel(
+                       conditionalPanel(condition = "input.submit != 0",
+                            h4("Stand Summary"),
+                            DTOutput("SDMD.Stand.summary"),
+                            hr()
+                       )
+                   )
+            )
+         )
+        ),
+    
     tabPanel("Figures",
         fluidRow(
-            
-            column(3, 
-                   wellPanel(      
-                       h4("Export Figures"),
-                       hr(),
-                       h5("Export Volume Increment Chart"),
-                       radioButtons("IMGformat1", "Image format", c("PDF", "PNG","TIFF"),
-                                    inline = TRUE),
-                       downloadButton("image_out1", "Save Figure"),
-                       hr(),
-                       h5("Export Density by Crown Class plot"),
-                       radioButtons("IMGformat3", "Image format", c("PDF", "PNG","TIFF"),
-                                    inline = TRUE),
-                       downloadButton("image_out3", "Save Figure"),
-                       hr(),
-                       h5("Export Stand Density plot"),
-                       radioButtons("IMGformat2", "Image format", c("PDF", "PNG","TIFF"),
-                                    inline = TRUE),
-                       downloadButton("image_out2", "Save Figure"),
-                       hr()
-                   )
-            ),
-            
-            
             column(6,
                 mainPanel(
                     conditionalPanel(condition = "input.submit == 0",
-                        h3("IMPORTANT: for display and export, please enter input values in the", 
-                            span("Input Values", style = "color:red"), "tab and confirm them through clicking the", span("Submit", style = "color:red"), "button.")
-                        ),
+                        h3("IMPORTANT: for display and export, please go back to the ", 
+                            span("Summary", style = "color:red"), " tab, enter input values, and click the", span("Submit", style = "color:red"), "button.")
+                            ),
                     conditionalPanel(condition = "input.submit != 0",
                         h4("Annual Net Cubit Foot Volume Increment"),
                         plotOutput("Ann.View", height="400px", width = "600px"),
             
                         h4("Density by Crown Class"),
-                        plotOutput("Den.View", height="400px", width = "600px"),
-            
-                        h4("Stand Density"),
-                        plotOutput("Den.View2", height="400px", width = "600px")
+                        plotOutput("Den.View", height="400px", width = "600px")
                         )
                 )
+            ),
+            column(6,
+                   mainPanel(
+                       conditionalPanel(condition = "input.submit != 0",
+                            h4("Stand Density"),
+                            plotOutput("Den.View2", height="400px", width = "600px")
+                       )
+                   )
             )
         )
     ),
+    
+   
+    
+    tabPanel("Report",
+        fluidRow(
+            column(3, 
+                wellPanel(      
+                    h4("Export Tables"),
+                    hr(),
+                    h5("Export Yield Summary Table"),
+                    radioButtons("Tblform1", "File format", c("CSV", "XLSX"),
+                                 inline = TRUE),
+                    downloadButton("table_out1", "Save Table"),
+                    hr(),
+                    h5("Export Growing Stock Table"),
+                    radioButtons("Tblform2", "File format", c("CSV", "XLSX"),
+                                 inline = TRUE),
+                    downloadButton("table_out2", "Save Table"),
+                    hr()
+                    )
+                 ),
+            column(3, 
+                wellPanel(      
+                    h4("Export SDMD"),
+                    hr(),
+                    h5("Export Stand Density Management Diagram"),
+                    radioButtons("SDMDform1", "Image format", c("PDF", "PNG","TIFF"),
+                                 inline = TRUE),
+                    downloadButton("SDMD_out1", "Save Figure"),
+                    hr(),
+                    h5("Export Stand Summary"),
+                    radioButtons("SDMDTblform1", "File format", c("CSV", "XLSX"),
+                                 inline = TRUE),
+                    downloadButton("SDMD_table_out1", "Save Table"),
+                    hr()
+                    )
+                 ),
+            column(3,     
+                 wellPanel(      
+                     h4("Export Figures"),
+                     hr(),
+                     h5("Export Volume Increment Chart"),
+                     radioButtons("IMGformat1", "Image format", c("PDF", "PNG","TIFF"),
+                                  inline = TRUE),
+                     downloadButton("image_out1", "Save Figure"),
+                     hr(),
+                     h5("Export Density by Crown Class plot"),
+                     radioButtons("IMGformat3", "Image format", c("PDF", "PNG","TIFF"),
+                                  inline = TRUE),
+                     downloadButton("image_out3", "Save Figure"),
+                     hr(),
+                     h5("Export Stand Density plot"),
+                     radioButtons("IMGformat2", "Image format", c("PDF", "PNG","TIFF"),
+                                  inline = TRUE),
+                     downloadButton("image_out2", "Save Figure"),
+                     hr()
+                 )
+            ),
+            column(3,     
+                wellPanel(
+                    h4("Export Report"),
+                    hr(),
+                    h5("Download Report"),
+                    radioButtons("Repform", "Document format", c("PDF", "HTML", "Word"),
+                              inline = TRUE),
+                    downloadButton("downloadReport","Create Report")
+                 )
+            )
+        )
+    ),
+    
     tabPanel("About",
              fluidRow(
                  column(9,

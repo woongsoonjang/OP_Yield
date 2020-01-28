@@ -2,7 +2,7 @@ library(shiny)
 library(DT)
 library(rmarkdown)
 library(openxlsx)
-
+library(standview)
 
 
 function(input, output) {
@@ -44,16 +44,19 @@ OP.tab.cal <-function(){
   cal.tab
   }
 
+yst<- function() yield.summary.table(OP.tab.cal())
+
+
 output$yield.summary <- renderDT({
   yth1 <- switch(ineq.cf(),
-               "Oliver & Powers 0_1"= "Oliver and Powers (1978) Total Stem CF Volume, 1-foot stump",
-               "Wensel & Olson 0_1" = "Wensel and Olson (1995) Total Stem CF Volume, 1-foot stump",
-               "MacLean & Berger 4_1" = "MacLean and Berger (1976) CF Volume, 4-inch top, 1-foot stump")
+               "Oliver & Powers 0_1"= "Oliver and Powers (1978) Total Stem cubic-foot (CF) Volume, 1-foot stump",
+               "Wensel & Olson 0_1" = "Wensel and Olson (1995) Total Stem cubic-foot (CF) Volume, 1-foot stump",
+               "MacLean & Berger 4_1" = "MacLean and Berger (1976) cubic-foot (CF) Volume, 4-inch top, 1-foot stump")
   yth2 <- switch(ineq.bf(),
-                 "Wensel & Olson 8_1" = "Wensel and Olson (1995): Scribner BF Volume 8-inch top, 1-foot stump",
-                 "Wensel & Olson 6_1" = "Wensel and Olson (1995): Scribner BF Volume 6-inch top, 1-foot stump",
-                 "Wensel & Olson 4_1" = "Wensel and Olson (1995): Scribner BF Volume 4-inch top, 1-foot stump",
-                 "MacLean & Berger v_1" = "MacLean and Berger (1976) Scribner BF Volume, 4-inch top, 1-foot stump")
+                 "Wensel & Olson 8_1" = "Wensel and Olson (1995): Scribner board-foot (BF) Volume 8-inch top, 1-foot stump",
+                 "Wensel & Olson 6_1" = "Wensel and Olson (1995): Scribner board-foot (BF) Volume 6-inch top, 1-foot stump",
+                 "Wensel & Olson 4_1" = "Wensel and Olson (1995): Scribner board-foot (BF) Volume 4-inch top, 1-foot stump",
+                 "MacLean & Berger v_1" = "MacLean and Berger (1976) Scribner board-foot (BF) Volume, 4-inch top, 1-foot stump")
   
   yield.header = htmltools::withTags(table(
     class = 'display',
@@ -64,18 +67,24 @@ output$yield.summary <- renderDT({
       tr(
         th(colspan = 10, yth2),
         tr(
-          lapply(c("Total Age", "Total CF Vol", "Merch CF Vol", "Total BF Vol", "Crop BF Vol", 
-                   "Comm Thin BF Vol", "SDI", "TPA", "QMD", "BA"), th)
+          lapply(c("Total Age", "Total CF Vol", "Merchantable CF Vol", "Total BF Vol", "Crop BF Vol", 
+                   "Commercial Thin BF Vol", "SDI", "TPA", "QMD", "BA"), th)
         )  
       )
     )
   ))
-
- datatable(yield.summary.table(OP.tab.cal()), container =  yield.header , rownames = FALSE, 
+ ytable <- yst()
+ datatable(ytable, container =  yield.header , rownames = FALSE, 
            options = list(paging = FALSE, ordering=F, sDom  = '<"top">rt<"bottom">',
-                          columnDefs=list(list(targets= '_all', class="dt-right"))               
-           ))
- 
+                          columnDefs=list(list(targets= '_all', class="dt-right"))),
+            caption = htmltools::tags$caption(
+              style = 'caption-side: bottom; text-align: left;',
+              htmltools::tags$p('- or empty cell =', htmltools::em(' no value for this item.')),
+              htmltools::tags$p('Note: ', htmltools::em('SDI = stand density index; TPA = trees per acre; QMD = quadratic mean diameter (inches); BA = basal area (square feet per acre).'))
+           
+              )
+           )
+
   })
 
 output$grow.stock <- renderDT({
@@ -98,7 +107,13 @@ output$grow.stock <- renderDT({
   datatable(Growing.stock.table(OP.tab.cal(), cf.merch.lim = cf.merch.lim(), Age=GS.Table.Age()),
             container =  gst.header , rownames = FALSE, 
             options = list(paging = FALSE, ordering=F, sDom  = '<"top">rt<"bottom">',
-                           columnDefs=list(list(targets= '_all', class="dt-right"))               
+                           columnDefs=list(list(targets= '_all', class="dt-right"))),
+            caption = htmltools::tags$caption(
+                  style = 'caption-side: bottom; text-align: left;',
+                  htmltools::tags$p('- or empty cell =', htmltools::em(' no value for this item.')),
+                  htmltools::tags$p('Note: ', htmltools::em('CT = commercial thin, TPA = trees per acre, BFV:CFV = board-foot to cubic-foot volume ratio, BA = basal area (square feet per acre), MAI = mean
+annual increment (cubic feet per acre), CAI = current annual increment (cubic feet per acre), CAI% = current annual increment expressed as percentage.'))
+                             
                            ))
 })
 
@@ -139,6 +154,8 @@ output$Den.View <- renderPlot(p2())
 p3<-function() Density.view(OP.tab.cal(), max.sdi= max.sdi())
 output$Den.View2 <- renderPlot(p3())
 
+
+
 output$TPA.for.PCT <- renderDT({
   
   TPAPCT.header = htmltools::withTags(table(
@@ -158,8 +175,12 @@ output$TPA.for.PCT <- renderDT({
   datatable(TPA.for.PCT.table(OP.tab.cal(), reineke.term = reineke.term()),
             container =  TPAPCT.header , rownames = FALSE, 
             options = list(paging = FALSE, ordering=F, sDom  = '<"top">rt<"bottom">',
-                           columnDefs=list(list(targets= '_all', class="dt-right"))               
-            ))          
+                           columnDefs=list(list(targets= '_all', class="dt-right"))),
+            caption = htmltools::tags$caption(
+                       style = 'caption-side: bottom; text-align: left;',
+                       htmltools::tags$p('Note: ', htmltools::em('PCT = precommercial thin, TPA = trees per acre, SDI = stand density index, UMZ = upper limit of management zone (65% of maximum SDI).'))
+                           )               
+            )          
   
 })
 
@@ -183,10 +204,127 @@ output$Den.guide <- renderDT({
   datatable(Density.guide,
             container =  Guide.header , rownames = FALSE, 
             options = list(paging = FALSE, ordering=F, sDom  = '<"top">rt<"bottom">',
-                           columnDefs=list(list(targets= '_all', class="dt-center"))               
+                           columnDefs=list(list(targets= '_all', class="dt-center"))),
+            caption = htmltools::tags$caption(
+              style = 'caption-side: bottom; text-align: left;',
+              htmltools::tags$p('Spacing =', htmltools::em(' square root of growing space per tree (ft).'))               
             ))          
   
 })
+
+TPA_SDMD<-eventReactive(input$submit,as.numeric(yst()$TPA))
+QMD_SDMD<-eventReactive(input$submit,as.numeric(yst()$QMD))
+
+p4<-function() {
+  
+  dmd.view(ineq         = 1,
+           inul         = TRUE,
+           insdi        = TRUE,
+           inply        = TRUE,
+           insdr        = FALSE,
+           insdl        = TRUE,
+           max.sdi      = max.sdi(),
+           dmd.title    = " ",
+           sdi.lines    = c(50, 100, 150, 200, 250, 300),
+           mgt.zone     = c(0.35,0.60),
+           reineke.term = -reineke.term(),
+           bsi          = si(),
+           mzcol        = "grey",
+           sdicol       = "red",
+           invol        = FALSE,
+           vcol         = "blue",
+           use.metric   = FALSE)
+  s <- 1:12
+  points(TPA_SDMD(),QMD_SDMD(),pch=19,cex=1.3)
+  segments(TPA_SDMD()[s], c(1, QMD_SDMD()[-1])[s], TPA_SDMD()[s+1], QMD_SDMD()[s+1], lwd=1.3)
+}
+output$SDMD.View <- renderPlot(p4())
+
+SDMD.t1<-function(){
+
+  t_out<-dmd.volume(ineq=3,
+                    tpa=TPA_SDMD()[1],
+                    qmd=QMD_SDMD()[1],
+                    max.sdi      = max.sdi(),
+                    use.metric   = FALSE)
+  
+for (i in 2:12){
+    t_out<-rbind(t_out, dmd.volume(ineq=3,
+                                   tpa=TPA_SDMD()[i],
+                                   qmd=QMD_SDMD()[i],
+                                   max.sdi      = max.sdi(),
+                                   use.metric   = FALSE))
+}
+  t_out<-round(t_out,1)
+  t_out
+}
+
+
+
+output$SDMD.Stand.summary <- renderDT({
+  
+  SDMD.header = htmltools::withTags(table(
+    class = 'display', 
+    thead(
+      tr(
+        th(rowspan = 2, "TPA", style = "text-align: center"),
+        th(rowspan = 2, "QMD", style = "text-align: center"),
+        th(rowspan = 2, "BA", style = "text-align: center"),
+        th(colspan = 2, "Volume (cubic feet per acre)", style = "text-align: center"),
+        th(colspan = 2, "Top Height (feet)", style = "text-align: center"),
+        th(colspan = 2, "Biomass (Tons per acre", style = "text-align: center"),
+        th(colspan = 2, "Canopy Cover (%)", style = "text-align: center")
+      ),
+      tr(
+        lapply(rep(c("Estimates", "SE"),4), th)
+      )  
+    )
+  )
+  )
+  
+  datatable(SDMD.t1(),
+            container =  SDMD.header , rownames = FALSE, 
+            options = list(paging = FALSE, ordering=F, sDom  = '<"top">rt<"bottom">',
+                           columnDefs=list(list(targets= '_all', class="dt-center"))),
+            caption = htmltools::tags$caption(
+                      style = 'caption-side: bottom; text-align: left;',
+                      htmltools::tags$p('Note: ', htmltools::em('TPA = trees per acre, QMD = quadratic mean diameter (inch), BA = basal area (square feet per acre), SE = standard error.'))
+                        )          
+  )
+})
+
+output$SDMD_out1 = downloadHandler(
+  filename = function() {
+    paste("SDMD_Plot", sep = ".", switch(
+      input$SDMDform1, PDF = "pdf", PNG = "png", TIFF = "tiff")
+    )
+  },
+  content = function(file) {
+    switch(
+      input$SDMDform1,
+      PDF=pdf(file, width=8, height=12),
+      PNG=png(file, width = 6, height = 8, units = 'in', pointsize=10, res = 300),
+      TIFF=tiff(file, width = 6, height = 8, units = 'in', pointsize=10, res = 300))
+    p4()
+    dev.off()
+  }
+)
+
+output$SDMD_table_out1 <- downloadHandler(
+  filename = function(){
+    paste("SDMD_Summary", switch(input$SDMDTblform1, CSV="csv", XLSX="xlsx"), sep = "." )
+  },
+  content = function(file) {
+    t_2<-SDMD.t1()
+    switch(
+      input$SDMDTblform1, 
+      CSV=write.csv(t_2, file, row.names = FALSE),
+      XLSX=write.xlsx(t_2, file, row.names = FALSE)
+    )
+    
+  }
+)
+
 
 output$table_out1 <- downloadHandler(
   filename = function(){
