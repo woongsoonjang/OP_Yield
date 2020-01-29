@@ -79,7 +79,7 @@ output$yield.summary <- renderDT({
                           columnDefs=list(list(targets= '_all', class="dt-right"))),
             caption = htmltools::tags$caption(
               style = 'caption-side: bottom; text-align: left;',
-              htmltools::tags$p('- or empty cell =', htmltools::em(' no value for this item.')),
+              htmltools::tags$p('"-" or empty cell =', htmltools::em(' no value for this item.')),
               htmltools::tags$p('Note: ', htmltools::em('SDI = stand density index; TPA = trees per acre; QMD = quadratic mean diameter (inches); BA = basal area (square feet per acre).'))
            
               )
@@ -110,7 +110,7 @@ output$grow.stock <- renderDT({
                            columnDefs=list(list(targets= '_all', class="dt-right"))),
             caption = htmltools::tags$caption(
                   style = 'caption-side: bottom; text-align: left;',
-                  htmltools::tags$p('- or empty cell =', htmltools::em(' no value for this item.')),
+                  htmltools::tags$p('"-" or empty cell =', htmltools::em(' no value for this item.')),
                   htmltools::tags$p('Note: ', htmltools::em('CT = commercial thin, TPA = trees per acre, BFV:CFV = board-foot to cubic-foot volume ratio, BA = basal area (square feet per acre), MAI = mean
 annual increment (cubic feet per acre), CAI = current annual increment (cubic feet per acre), CAI% = current annual increment expressed as percentage.'))
                              
@@ -267,6 +267,7 @@ output$SDMD.Stand.summary <- renderDT({
     class = 'display', 
     thead(
       tr(
+        th(rowspan = 2, "Age", style = "text-align: center"),
         th(rowspan = 2, "TPA", style = "text-align: center"),
         th(rowspan = 2, "QMD", style = "text-align: center"),
         th(rowspan = 2, "BA", style = "text-align: center"),
@@ -282,7 +283,7 @@ output$SDMD.Stand.summary <- renderDT({
   )
   )
   
-  datatable(SDMD.t1(),
+  datatable(cbind(data.frame (Age = seq(5, 60, by=5)), SDMD.t1()),
             container =  SDMD.header , rownames = FALSE, 
             options = list(paging = FALSE, ordering=F, sDom  = '<"top">rt<"bottom">',
                            columnDefs=list(list(targets= '_all', class="dt-center"))),
@@ -315,7 +316,7 @@ output$SDMD_table_out1 <- downloadHandler(
     paste("SDMD_Summary", switch(input$SDMDTblform1, CSV="csv", XLSX="xlsx"), sep = "." )
   },
   content = function(file) {
-    t_2<-SDMD.t1()
+    t_2<-cbind(data.frame (Age = seq(5, 60, by=5)), SDMD.t1())
     switch(
       input$SDMDTblform1, 
       CSV=write.csv(t_2, file, row.names = FALSE),

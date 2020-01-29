@@ -84,7 +84,7 @@ p4()
 
 ```{r, echo=FALSE,warning=FALSE}
 suppressWarnings(suppressMessages(library("pander")))   # suppress warnings
-SDMDTABLE_OUT <- SDMD.t1()
+SDMDTABLE_OUT <- cbind(data.frame (Age = seq(5, 60, by=5)), SDMD.t1())
 panderOptions('table.continues', '')
 pander(SDMDTABLE_OUT, split.table = Inf,  round=1, style = 'rmarkdown')
 

@@ -11,7 +11,7 @@ navbarPage(title = "OP-Yield",
                 wellPanel(
                     numericInput("plant.yr", "Planting Year", as.integer(format(Sys.Date(), "%Y")))%>%
                         bs_embed_tooltip(title = "Planting year is a bookeeping value only. It has no impact on tabular values"),
-                    sliderInput("plant.den", "Planting Density (tpa):",
+                    sliderInput("plant.den", "Planting Density (TPA):",
                             min = 130, max = 1210, value = 303),
                     sliderInput("si", "Site Index (ft):",
                             min = 75, max = 125, value = 105)%>%
@@ -30,7 +30,7 @@ navbarPage(title = "OP-Yield",
                 ),
             column(3,
                 wellPanel(
-                    sliderInput("pct.tgt", "PCT Target (tpa):", min = 80, max = 300, value = 180)%>%
+                    sliderInput("pct.tgt", "PCT Target (TPA):", min = 80, max = 300, value = 180)%>%
                         bs_embed_tooltip(title = "Trees per acre retained in a precommercial thin"),
                     sliderInput("bg.mort", "Annual Background Mortality %:", min = 0, max = 1, value = 0)%>%
                         bs_embed_tooltip(title = "Percent of stems annual mortality"),
@@ -45,7 +45,7 @@ navbarPage(title = "OP-Yield",
                             choices = c("Wensel & Olson 8_1","Wensel & Olson 6_1", "Wensel & Olson 4_1",
                                         "MacLean & Berger v_1"), selected = "Wensel & Olson 4_1")%>%
                         bs_embed_tooltip(title = "Select BF Volume equations. \n Following two numbers represent top and stump sizes for volume calculation."),
-                    sliderInput("reten.tgt", "Target Rotation Retention (tpa):",
+                    sliderInput("reten.tgt", "Target Rotation Retention (TPA):",
                             min = 50, max = 180, value = 80)%>%
                         bs_embed_tooltip(title = "How many trees do you want to retain when you conduct a commertial thin?"),
                     sliderInput("GS.Table.Age", "Growing Stock Table Age:",
